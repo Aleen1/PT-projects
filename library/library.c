@@ -108,6 +108,50 @@ void printArray(int arr[], int n){
     printf("%c",'\n');
 }
 
+void initialise_heap(struct Node **root, int data){
+	*root = (Node*)malloc(sizeof(Node));
+	(*root)->data = data;
+	(*root)->l = NULL;
+	(*root)->r = NULL;
+}
+
+void add_to_heap(Node *root, int data){
+	if (data < root->data){
+		if (root->l == NULL)
+		{
+			Node *temp_node_heap = (Node*)malloc(sizeof(Node));
+			temp_node_heap->data = data;
+			temp_node_heap->l = 0;
+			temp_node_heap->r = 0;
+
+			root->l = temp_node_heap;
+
+		}
+		else
+			add_to_heap(root->l, data);
+	}
+	else{
+		if (root->r == NULL){
+			Node *temp_node_heap = (Node*)malloc(sizeof(Node));
+			temp_node_heap->data = data;
+			temp_node_heap->l = 0;
+			temp_node_heap->r = 0;
+			root->r = temp_node_heap;
+		}
+		else
+			add_to_heap(root->r, data);
+	}
+}
+
+void heap_sort(Node *root, int *vec, int *sizee){
+	if (root->l != 0)
+		heap_sort(root->l, vec, sizee);
+	*sizee = *sizee + 1;
+	vec[*sizee] = root->data;
+	if (root->r != 0)
+		heap_sort(root->r, vec, sizee);
+}
+
 void heapify(int arr[], int n, int i){
     int largest = i;
     int l = 2*i + 1;
@@ -266,6 +310,128 @@ void radixsort(int arr[], int n){
         countSort(arr, n, exp);
 }
 
+void initialise_list(Node_L **node){
+	*node = NULL;
+}
+
+void add_to_list(Node_L** node, int data){
+	Node_L *p = (Node_L*)malloc(sizeof(Node_L));
+	p->data = data;
+	p->next = *node;
+	*node = p;
+}
+
+void remove_first_list(Node_L **node){
+	if (node)
+	{
+		Node_L *p = *node;
+		*node = p->next;
+		free(p);
+	}
+}
+
+int get_first_elem_list(Node_L *node){
+	if (node)
+		return node->data;
+	return -1;
+}
+
+void initialise_queue(int *sq, int *eq){
+	*sq = *eq = -1;
+}
+
+void add_to_queue(int *queue, int *sq, int *eq, int MAX, int data){
+	if (*sq == (-1) && *eq == (-1))
+		*sq = *eq = 1, queue[*eq] = data;
+	else
+	{
+		int t = (*eq + 1) % (MAX - 1);
+		if (t == 0)
+			t = 1;
+		queue[t] = data;
+		*eq = t;
+	}
+}
+
+int is_empty_queue(int *sq, int *eq){
+	if (*sq == (-1) && *eq == (-1))
+		return 1;
+	else
+		return 0;
+}
+
+void pop_queue(int *sq, int *eq, int MAX){
+	int t = (*sq + 1) % (MAX - 1);
+	if (t == 0)
+		t = 1;
+	*sq = t;
+	if (*sq > *eq)
+		*sq = *eq = -1;
+}
+
+int  queue_front(int *queue, int *sq){
+	return queue[*sq];
+}
+
+void DFS(Node_L *V[], int *viz, int t){
+	viz[t] = 1;
+	while (V[t])
+	{
+		if (!viz[V[t]->data])
+			DFS(V, viz, V[t]->data);
+		remove_first_list(&V[t]);
+	}
+}
+
+void BFS(Node_L *V[], int size, int *viz, int s){
+	int *queue = (int*)malloc(sizeof(int) * size);
+	int sq, eq;
+
+	initialise_queue(&sq, &eq);
+
+	add_to_queue(queue, &sq, &eq, size + 1, s);
+
+	while (!is_empty_queue(&sq, &eq))
+	{
+		int node = queue_front(queue, &sq);
+		viz[node] = 1;
+		int el;
+		do
+		{
+			el = get_first_elem_list(V[node]);
+			if (el != -1)
+			{
+				if (!viz[el])
+				{
+					viz[el] = 1;
+					add_to_queue(queue, &sq, &eq, size + 1, el);
+				}
+				remove_first_list(&V[node]);
+			}
+		} while (el != -1);
+
+		pop_queue(&sq, &eq, size + 5);
+	}
+
+	free(queue);
+}
+
+void sort_top(Node_L *V[], int *viz, Node_L **stk, int t){
+	viz[t] = 1;
+	Node_L *p = V[t];
+	while (p)
+	{
+		if (!viz[p->data])
+		{
+			viz[p->data] = 1;
+			sort_top(V, viz, stk, p->data);
+		}
+		p = p->next;
+	}
+	add_to_list(stk, t);
+
+}
+
 void readMat(int a[100][100], int n){
     int i,j;
     printf("Enter the adjacency matrix:\n");
@@ -310,14 +476,11 @@ void bfs_mat(int root, int n){
     }
 }
 
-//Generare de permutari
-void inline init(int k)
-{
-    st[k]=0;
+void inline init(int k){
+    st[k]=0;                //Generare de permutari
 }
 
-int succesor(int k)
-{
+int succesor(int k){
     if(st[k]<N)
     {
         ++st[k];
@@ -326,27 +489,26 @@ int succesor(int k)
     return 0;
 }
 
-int solution(int k)
-{
+int solution(int k){
     return k==N;
 }
-void printSolution(int k)
-{
+
+void printSolution(int k){
     int i;
     for(i=1;i<=k;i++)
         printf("%d ",st[i]);
     printf("%c",'\n');
 }
-int valid(int k)
-{
+
+int valid(int k){
     int i;
     for(i=1;i<k;i++)
         if(st[i]==st[k])
             return 0;
     return 1;
 }
-void bkt(int k)
-{
+
+void bkt(int k){
    init(k);
    while(succesor(k))
    {
@@ -394,4 +556,85 @@ int knapsack(int n, int g){
             ans=d[i];
     }
     return ans-1;
+}
+
+int MatrixChainOrder(int p[], int n){
+    static int m[100][100], i, j, k, L, q;
+
+    for (L=2; L<n; L++)
+    {
+        for (i=1; i<=n-L+1; i++)
+        {
+            j = i+L-1;
+            m[i][j] = 0x3f3f3f;
+            for (k=i; k<=j-1; k++)
+            {
+                q = m[i][k] + m[k+1][j] + p[i-1]*p[k]*p[j];
+                if (q < m[i][j])
+                    m[i][j] = q;
+            }
+        }
+    }
+    return m[1][n-1];
+}
+
+void printSol_queen(int board[N][N]){
+    int i = 0;
+    for (; i < N; i++)
+    {
+        int j = 0;
+        for (; j < N; j++)
+            printf(" %d ", board[i][j]);
+        printf("\n");
+    }
+}
+
+int isSafe(int board[N][N], int row, int col){
+    int i, j;
+
+    for (i = 0; i < col; i++)
+        if (board[row][i])
+            return 0;
+
+    for (i=row, j=col; i>=0 && j>=0; i--, j--)
+        if (board[i][j])
+            return 0;
+
+    for (i=row, j=col; j>=0 && i<N; i++, j--)
+        if (board[i][j])
+            return 0;
+    return 1;
+}
+
+int solveNQUtil(int board[N][N], int col){
+
+    if (col >= N)
+        return 1;
+    int i = 0;
+    for (; i < N; i++)
+    {
+        if ( isSafe(board, i, col) )
+        {
+            board[i][col] = 1;
+            if ( solveNQUtil(board, col + 1) )
+                return 1;
+            board[i][col] = 0; // BACKTRACK
+        }
+    }
+    return 0;
+}
+
+int solveNQ(){
+    int board[100][100] = { {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0}
+    };
+    if ( solveNQUtil(board, 0) == 0 )
+    {
+      printf("Solution does not exist");
+      return 0;
+    }
+    printSol_queen(board);
+    return 1;
 }
