@@ -36,8 +36,8 @@
 
     /**Heap sort funtions**/
     void initialise_heap(Node **root, int data);
-	void add_to_heap(Node *root, int data);
-	void heap_sort(Node *root, int *vec, int *sizee);
+    void add_to_heap(Node *root, int data);
+    void heap_sort(Node *root, int *vec, int *sizee);
     void heapify(int arr[], int n, int i);
     void heapSort(int arr[], int n);
 
@@ -56,24 +56,24 @@
     void radixsort(int arr[], int n);
 
     /**List functions**/
-	void initialise_list(Node_L **node);
-	void add_to_list(Node_L **node, int data);
-	void remove_first_list(Node_L **node);
-	int get_first_elem_list(Node_L *node);
+    void initialise_list(Node_L **node);
+    void add_to_list(Node_L **node, int data);
+    void remove_first_list(Node_L **node);
+    int get_first_elem_list(Node_L *node);
 
     /**Queue functions**/
     void initialise_queue(int *sq, int *eq);
-	void add_to_queue(int *queue, int *sq, int *eq, int MAX, int data);
-	int is_empty_queue(int *sq, int *eq);
-	void pop_queue(int *sq, int *eq, int MAX);
-	int  queue_front(int *queue, int *sq);
+    void add_to_queue(int *queue, int *sq, int *eq, int MAX, int data);
+    int is_empty_queue(int *sq, int *eq);
+    void pop_queue(int *sq, int *eq, int MAX);
+    int  queue_front(int *queue, int *sq);
 
     /**Traversing graphs/trees functions**/
     void DFS(Node_L *V[], int *viz, int t);
-	void BFS(Node_L *V[], int size, int *viz, int s);
+    void BFS(Node_L *V[], int size, int *viz, int s);
     void dfs_mat(int root, int n);
     void bfs_mat(int root, int n);
-	void sort_top(Node_L *V[], int *viz, Node_L **stk, int t);
+    void sort_top(Node_L *V[], int *viz, Node_L **stk, int t);
 
     /**Backtracking standard functions**/
     void inline init(int k);
