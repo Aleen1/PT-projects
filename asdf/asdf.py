@@ -62,6 +62,7 @@ def infixToPostfix(infixexpr):
     return " ".join(postfixList)
 
 if __name__ == '__main__':
-    a = infixToPostfix("2 * 3 + 8")
-    result = parse_rpn(a)
-    print (result)
+    with open('data.in','r') as infile:
+        for data in infile:
+            postFix = infixToPostfix( data )
+            print( parse_rpn(postFix) )
