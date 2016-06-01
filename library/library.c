@@ -578,63 +578,22 @@ int MatrixChainOrder(int p[], int n){
     return m[1][n-1];
 }
 
-void printSol_queen(int board[N][N]){
-    int i = 0;
-    for (; i < N; i++)
-    {
-        int j = 0;
-        for (; j < N; j++)
-            printf(" %d ", board[i][j]);
-        printf("\n");
-    }
-}
+void queens(int k) {
+    int i;
+	if (k == n + 1) {
+		if (!nr) {
+			for (i = 1;i <= n;i++)
+				printf("%d ",v[i]);
+		}
+		nr++;
+		return;
+	}
 
-int isSafe(int board[N][N], int row, int col){
-    int i, j;
-
-    for (i = 0; i < col; i++)
-        if (board[row][i])
-            return 0;
-
-    for (i=row, j=col; i>=0 && j>=0; i--, j--)
-        if (board[i][j])
-            return 0;
-
-    for (i=row, j=col; j>=0 && i<N; i++, j--)
-        if (board[i][j])
-            return 0;
-    return 1;
-}
-
-int solveNQUtil(int board[N][N], int col){
-
-    if (col >= N)
-        return 1;
-    int i = 0;
-    for (; i < N; i++)
-    {
-        if ( isSafe(board, i, col) )
-        {
-            board[i][col] = 1;
-            if ( solveNQUtil(board, col + 1) )
-                return 1;
-            board[i][col] = 0; // BACKTRACK
-        }
-    }
-    return 0;
-}
-
-int solveNQ(){
-    int board[100][100] = { {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0}
-    };
-    if ( solveNQUtil(board, 0) == 0 )
-    {
-      printf("Solution does not exist");
-      return 0;
-    }
-    printSol_queen(board);
-    return 1;
+	for (i = 1;i <= n;i++)
+		if (!v1[i] && !v2[k + i - n] && !v3[k - i + n]) {
+			v1[i] = v2[k + i - n] = v3[k - i + n] = 1;
+			v[k] = i;
+			queens(k + 1);
+			v1[i] = v2[k + i - n] = v3[k - i + n] = 0;
+		}
 }
