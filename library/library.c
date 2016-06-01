@@ -583,7 +583,14 @@ void queens(int k) {
 	if (k == n + 1) {
 		if (!nr) {
 			for (i = 1;i <= n;i++)
-				printf("%d ",v[i]);
+				mat[i][v[i]]=1;
+            for(i=1;i<=n;++i)
+            {
+                int j;
+                for(j=1;j<=n;++j)
+                    printf("%d ",mat[i][j]);
+                printf("%c",'\n');
+            }
 		}
 		nr++;
 		return;
