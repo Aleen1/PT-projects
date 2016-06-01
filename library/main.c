@@ -6,12 +6,6 @@ int v[100];
 
 int main()
 {
-    Nod *head=malloc(sizeof(struct Nod));
-    head->next=NULL;
-    push_first(head,1);
-
-    print_list(head);
-
     /*int arr[] = {170, 45, 75, 90, 802, 24, 2, 66};
     int n = sizeof(arr)/sizeof(arr[0]);
     radixsort(arr, n);
@@ -38,6 +32,12 @@ int main()
 
     /*printf("%d",knapsack(6,10));*/
 
+    /*
+    printf("n=");
+	scanf("%d", &n);
+	queens(1);
+	printf("\n%d", nr);
+    */
 
     return 0;
 }
