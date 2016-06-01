@@ -1,7 +1,7 @@
 #ifndef library
 #define library
 
-    int adj_mat[100][100],st[100],N;
+    int adj_mat[100][100],st[100],N,mat[100][100];
     int n,v[100],v1[100],v2[100],v3[100],nr;
 
     typedef struct Nod{
