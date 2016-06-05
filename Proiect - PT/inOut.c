@@ -6,11 +6,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-    void afisare(int x){
-        printf("- %d\n",x);
-    }
-
-    void declare_var(char *line){
+    int declare_var(char *line){
         char var = line[0];
         long long val=0;
         if(line[2]=='-'){
@@ -27,7 +23,7 @@
             }
         }
         VAR[var-'a']=val;
-        afisare(val);
+        return val;
     }
 
     void read(){
@@ -36,9 +32,9 @@
             char line[1024];
             printf("> ");
             gets(line);
-            int lenght=strlen(line),equal=0,i;
+            int equal=0,i;
 
-            for(i=0;i<lenght;++i)
+            for(i=0;line[i]!='\0';++i)
             {
                 if(line[i] == ' ')
                 {
@@ -51,7 +47,7 @@
                      }
             }
             if(equal){
-                declare_var(line);
+                printf("- %lld\n", declare_var(line));
             }
             else{
                 char prr[100];
